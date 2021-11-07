@@ -3,6 +3,36 @@
 2. 게시글: post( id, writer, postdate, subject, content )
 3. 댓글 : comment( id, postid, parentid, writer, content, commentdate )
 
+1. user
+CREATE TABLE user (
+	id INT NOT NULL AUTO_INCREMENT ,
+	name VARCHAR(24) NOT NULL,
+	userid VARCHAR(24) NOT NULL ,
+	password VARCHAR(60),
+	PRIMARY KEY (id)
+	CONSTRAINT userid_uq UNIQUE(userid)
+);
+2. post
+CREATE TABLE post(
+	id INT NOT NULL AUTO_INCREMENT,
+	writer VARCHAR(24) NOT NULL,
+	postdate TIMESTAMP NOT NULL ,
+	subject LONGTEXT NOT NULL,
+	content LONGTEXT NOT NULL,
+	PRIMARY KEY (id)
+);
+3. comment
+CREATE TABLE comment(
+	id INT NOT NULL AUTO_INCREMENT,
+	postid INT NOT NULL,
+	parentid INT DEFAULT 0 ,
+	writer VARCHAR(24) NOT NULL ,
+	content LONGTEXT NOT NULL,
+	commentdate TIMESTAMP NOT NULL,
+	PRIMARY KEY (id)
+); 
+=========================================================================
+
 쿼리
 1. 게시글 조회
 a가 작성한 게시글 조회
@@ -10,17 +40,43 @@ SELECT * FROM post WHERE writer = 'a' ;
 2. 게시글 작성
 a가 새로운 게시글 작성
 INSERT INTO post (writer, postdate, subject, content ) VALUES ( 'a', SYSTIMESTAMP, '제목입니다.', '게시글입니다.');
-3. 게시글 삭제
+3. 게시글 수정
+a가 id=2인 게시글을 수정
+UPDATE post SET postdate=SYSTIMESTAMP, content='글을 수정하겠습니다.' WHERE writer ='b' postid=2 AND parentid=0 AND ;
+4. 게시글 삭제
 a가 작성한 모든 게시글 삭제 
 DELETE FROM post WHERE writer = 'a';
-a가 2021년 9월 30일에 작성한 모든 게시글 삭제
-DELTE FROM post WHERE writer= 'a' AND postdate='2021-09-30';
-4. 댓글 작성
+a가 2021년 9월 30일에 작성한 id가 2인 게시글 삭제
+DELTE FROM post WHERE writer= 'a' AND postdate='2021-09-30' and id=2;
+5. 댓글 작성
 b가 a의 id=2인 게시글에 댓글 작성
 INSERT INTO comment (postid,parentid,writer,content,commentdate) VALUES ( 2, 0, 'b', '댓글입니다.', SYSTIMESTAMP);
 c가 b의 댓글에 댓글 작성
 INSERT INTO comment (postid,parentid,writer,content,commentdate) VALUES ( 2, 1, 'c', 'b의 댓글에 대한 댓글입니다.', SYSTIMESTAMP);
-5. 댓글 수정
+6. 댓글 수정
 b가 id=2인 a의 게시글에 대한 댓글을 수정.
-UPDATE comment SET comment= '댓글을 수정합니다.', commentdate = SYSTIMESTAMP WHERE postid=2, parentid=0, writer ='b';
+UPDATE comment SET comment= '댓글을 수정합니다.', commentdate = SYSTIMESTAMP WHERE writer ='b' AND postid=2 AND parentid=0 ;
+7. 댓글 삭제
+b가 a의 게시글에 작성한 id가 1인 댓글을 삭제.
+DELTE FROM comment WHERE writer= 'b' AND parentid=0 AND id=1;
 
+====11월4일========================================================================
+
+1. CREATE INDEX <Index name> ON <Table name> ( column 1, column 2, ... );
+2.
+- CREATE TABLE 테이블이름
+(
+    필드명 필드타입 UNIQUE,
+    ...
+)
+- CREATE TABLE 테이블이름
+(
+    필드이름 필드타입,
+    ... ,
+    [CONSTRAINT 제약조건이름] UNIQUE (필드이름)
+)
+
+
+CREATE INDEX user_idx ON user(name, userid);
+CREATE INDEX post_idx ON post(writer, subject);
+CREATE INDEX comment_idx ON comment( writer, postid);
