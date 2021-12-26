@@ -6,14 +6,19 @@
 </head>
 <body>
   <h1><a href="index.html">Eva Green</a></h1>
-  <input type="button" value="night" onclick="
-    document.querySelector('body').style.backgroundColor='black';
-    document.querySelector('body').style.color='white';
+  <input type="button" value="night"onclick="
+    var target=document.querySelector('body');
+    if(this.value==='night'){
+      target.style.backgroundColor='black';
+      target.style.color='white';
+      this.value='day';
+    }else{
+      target.style.backgroundColor='white';
+      target.style.color='black';
+      this.value='night';
+    }
   ">
-  <input type="button" value="day"onclick="
-    document.querySelector('body').style.backgroundColor='white';
-    document.querySelector('body').style.color='black';
-  ">
+
   <ul>
     <li><a href="1.html">10대</a></li>
     <li><a href="2.html">20대</a></li>
@@ -29,5 +34,17 @@
   십대에 들어설 때였다고 하네요. 에바 그린은 프랑소와 트뤼포 감독, 이자벨 아자니 주연의
   <아델의 사랑 이야기>를 본 후 연기자를 꿈꾸게 되었고, 그녀의 어머니는 부끄러움을 많이
   타는 딸의 성격을 조금이나마 고쳐 보고 싶어 연기를 시키게 되었답니다.</p>
+  <input type="button" value="night"onclick="
+    var target=document.querySelector('body');
+    if(this.value==='night'){
+      target.style.backgroundColor='black';
+      target.style.color='white';
+      this.value='day';
+    }else{
+      target.style.backgroundColor='white';
+      target.style.color='black';
+      this.value='night';
+    }
+  ">
 </body>
 </html>
